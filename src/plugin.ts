@@ -1,33 +1,40 @@
 import * as limbo from "limbo";
-import ollama from "ollama";
+import ollama from "ollama/browser";
 
-export function activate() {
-	// todo, consider settings for ollama host, port, ...
+export default {
+	onActivate: async () => {
+		// limbo.settings.register({
+		// 	id: "host",
+		// 	type: "text",
+		// 	label: "Ollama host",
+		// 	description: "The Ollama host URL",
+		// 	defaultValue: "http://localhost:11434",
+		// 	placeholder: "http://localhost:11434",
+		// });
 
-	// --- llms ---
+		// --- llms ---
 
-	limbo.llms.register({
-		id: "llama3",
-		name: "llama3",
-		description: "Meta Llama 3: The most capable openly available LLM to date",
-		generateText: async ({ promptBuilder, onChunk }) => {
-			// const systemPrompt = promptBuilder.getSystemPrompt();
-			const userPrompt = promptBuilder.getUserPrompt();
+		const listResult = await ollama.list();
 
-			const response = await ollama.chat({
-				model: "llama3",
-				stream: true,
-				messages: [
-					{
-						role: "user",
-						content: userPrompt,
-					},
-				],
+		for (const model of listResult.models) {
+			limbo.models.registerLLM({
+				id: model.name,
+				name: model.name,
+				description: `Ollama model: ${model.name}`,
+				generateText: async ({ promptBuilder, onChunk }) => {
+					const messages = promptBuilder.getMessages();
+
+					const response = await ollama.chat({
+						model: model.name,
+						stream: true,
+						messages,
+					});
+
+					for await (const chunk of response) {
+						onChunk(chunk.message.content);
+					}
+				},
 			});
-
-			for await (const chunk of response) {
-				onChunk(chunk.message.content);
-			}
-		},
-	});
-}
+		}
+	},
+} satisfies limbo.Plugin;

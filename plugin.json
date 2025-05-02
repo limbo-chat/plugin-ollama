@@ -1,15 +1,11 @@
 {
-	"$schema": "./node_modules/limbo/schemas/plugin.json",
 	"id": "ollama",
 	"name": "Ollama",
 	"version": "0.0.1",
-	"minApiVersion": "0.0.1",
+	"apiVersion": "^0.0.1",
 	"description": "Adds support for Ollama models",
 	"author": {
 		"name": "Wes Lowe",
 		"email": "wesley.jlowe10@gmail.com"
-	},
-	"files": {
-		"js": "./dist/plugin.js"
 	}
 }

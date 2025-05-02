@@ -1,19 +1,22 @@
 {
-	"name": "limbo-plugin-openai",
+	"name": "limbo-plugin-ollama",
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite build --watch",
-		"build": "vite build"
+		"build": "rollup -c --environment MODE:production",
+		"dev": "rollup -c --watch"
 	},
 	"dependencies": {
-		"limbo": "file:~/coding/node/oss/limbo-api",
 		"ollama": "^0.5.15",
-		"vite-plugin-limbo": "file:~/coding/node/oss/vite-plugin-limbo"
+		"rollup-plugin-esbuild": "^6.2.1"
 	},
 	"devDependencies": {
+		"@rollup/plugin-node-resolve": "^16.0.1",
+		"@rollup/plugin-typescript": "^12.1.2",
+		"limbo": "file:../limbo-api",
 		"prettier": "^3.5.3",
-		"typescript": "^5.8.3",
-		"vite": "^6.2.5"
+		"rollup": "^4.40.1",
+		"rollup-plugin-limbo": "file:../rollup-plugin-limbo",
+		"typescript": "^5.8.3"
 	}
 }
