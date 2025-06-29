@@ -7,15 +7,16 @@
 		"dev": "rollup -c --watch"
 	},
 	"dependencies": {
-		"ollama": "^0.5.15",
-		"rollup-plugin-esbuild": "^6.2.1"
+		"@limbo/api": "file:../limbo-api",
+		"@limbo/openai-utils": "file:../limbo-openai-utils",
+		"ollama": "^0.5.15"
 	},
 	"devDependencies": {
 		"@rollup/plugin-node-resolve": "^16.0.1",
-		"@rollup/plugin-typescript": "^12.1.2",
-		"limbo": "file:../limbo-api",
+		"dotenv": "^17.0.0",
 		"prettier": "^3.5.3",
 		"rollup": "^4.40.1",
+		"rollup-plugin-esbuild": "^6.2.1",
 		"rollup-plugin-limbo": "file:../rollup-plugin-limbo",
 		"typescript": "^5.8.3"
 	}
