@@ -1,8 +1,7 @@
-import * as limbo from "@limbo/api";
+import * as limbo from "@limbo-chat/api";
 import ollama from "ollama/browser";
 import {
 	convertMessagesToOpenAICompatible,
-	convertToolsToOpenAICompatible,
 	FetchAdapter,
 	OpenAICompatibleClient,
 	streamOpenAICompatibleChatCompletion,
@@ -47,20 +46,24 @@ export default {
 				name: model.name,
 				description: `Ollama model: ${model.name}`,
 				capabilities: [],
-				chat: async ({ messages, tools, onText, abortSignal }) => {
+				understands: (node) => {
+					// todo, reevaluate
+					return node.type === "text";
+				},
+				chat: async ({ prompt, tools, onText, abortSignal }) => {
 					const client = new OpenAICompatibleClient({
 						adapter: new FetchAdapter(),
 						baseUrl: "http://localhost:11434/v1",
 					});
 
-					const openaiTools = convertToolsToOpenAICompatible(tools);
-					const openaiMessages = convertMessagesToOpenAICompatible(messages);
+					// const openaiTools = convertToolsToOpenAICompatible(tools);
+					const openaiMessages = convertMessagesToOpenAICompatible(prompt.getMessages());
 
-					console.log("openaiTools", openaiTools);
+					// console.log("openaiTools", openaiTools);
 
 					const stream = streamOpenAICompatibleChatCompletion(client, {
 						model: model.name,
-						tools: openaiTools,
+						// tools: openaiTools,
 						messages: openaiMessages,
 						abortSignal,
 					});
